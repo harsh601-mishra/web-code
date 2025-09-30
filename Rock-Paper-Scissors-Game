@@ -1,0 +1,110 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class RockPaperScissors {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+
+        int userScore = 0;
+        int computerScore = 0;
+        int rounds = 0;
+
+        System.out.println("Welcome to Rock, Paper, Scissors!");
+        System.out.println("Instructions: Choose 'rock', 'paper', or 'scissors' to play.");
+
+        boolean playAgain;
+
+        do {
+            rounds++;
+            System.out.print("\nRound " + rounds + " - Enter your choice: ");
+            String userChoice = scanner.nextLine().trim().toLowerCase();
+
+            // Validate user input
+            while (!isValidChoice(userChoice)) {
+                System.out.print("Invalid choice. Please enter 'rock', 'paper', or 'scissors': ");
+                userChoice = scanner.nextLine().trim().toLowerCase();
+            }
+
+            // Generate computer choice
+            String computerChoice = getComputerChoice(random);
+
+            // Display choices
+            System.out.println("You chose: " + capitalize(userChoice));
+            System.out.println("Computer chose: " + capitalize(computerChoice));
+
+            // Determine and display the result of the round
+            int result = determineWinner(userChoice, computerChoice);
+            switch (result) {
+                case 1:
+                    System.out.println("You win this round!");
+                    userScore++;
+                    break;
+                case -1:
+                    System.out.println("Computer wins this round!");
+                    computerScore++;
+                    break;
+                case 0:
+                    System.out.println("This round is a tie!");
+                    break;
+            }
+
+            // Show current score
+            System.out.println("Scores: You " + userScore + " - Computer " + computerScore);
+
+            // Ask if user wants to play another round
+            System.out.print("Do you want to play again? (yes/no): ");
+            String response = scanner.nextLine().trim().toLowerCase();
+            playAgain = response.equals("yes") || response.equals("y");
+
+        } while (playAgain);
+
+        // Final score display
+        System.out.println("\nGame over!");
+        System.out.println("Final scores after " + rounds + " round(s): You " + userScore + " - Computer " + computerScore);
+
+        if (userScore > computerScore) {
+            System.out.println("Congratulations! You won the game!");
+        } else if (userScore < computerScore) {
+            System.out.println("Computer won the game. Better luck next time!");
+        } else {
+            System.out.println("It's a tie game!");
+        }
+
+        scanner.close();
+    }
+
+    // Method to validate user input choice
+    private static boolean isValidChoice(String choice) {
+        return choice.equals("rock") || choice.equals("paper") || choice.equals("scissors");
+    }
+
+    // Randomly generate computer's choice
+    private static String getComputerChoice(Random random) {
+        String[] choices = {"rock", "paper", "scissors"};
+        int index = random.nextInt(choices.length);
+        return choices[index];
+    }
+
+    // Determine winner: returns 1 if user wins, -1 if computer wins, 0 if tie
+    private static int determineWinner(String user, String computer) {
+        if (user.equals(computer)) return 0;
+
+        switch (user) {
+            case "rock":
+                return (computer.equals("scissors")) ? 1 : -1;
+            case "paper":
+                return (computer.equals("rock")) ? 1 : -1;
+            case "scissors":
+                return (computer.equals("paper")) ? 1 : -1;
+            default:
+                return 0;
+        }
+    }
+
+    // Capitalize first letter for display
+    private static String capitalize(String text) {
+        if (text == null || text.isEmpty()) return text;
+        return text.substring(0, 1).toUpperCase() + text.substring(1);
+    }
+}

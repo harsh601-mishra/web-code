@@ -1,0 +1,36 @@
+# Input: marks in each subject
+marks = []
+num_subjects = int(input("Enter the number of subjects: "))
+
+for i in range(num_subjects):
+    mark = float(input(f"Enter marks obtained in subject {i+1} (out of 100): "))
+    while mark < 0 or mark > 100:
+        print("Invalid marks! Please enter a value between 0 and 100.")
+        mark = float(input(f"Enter marks obtained in subject {i+1} (out of 100): "))
+    marks.append(mark)
+
+# Calculate total marks
+total_marks = sum(marks)
+
+# Calculate average percentage
+average_percentage = total_marks / num_subjects
+
+# Grade calculation based on average percentage
+if average_percentage >= 90:
+    grade = 'A+'
+elif average_percentage >= 80:
+    grade = 'A'
+elif average_percentage >= 70:
+    grade = 'B'
+elif average_percentage >= 60:
+    grade = 'C'
+elif average_percentage >= 50:
+    grade = 'D'
+else:
+    grade = 'F'
+
+# Display results
+print("\nResults:")
+print(f"Total Marks: {total_marks} / {num_subjects*100}")
+print(f"Average Percentage: {average_percentage:.2f}%")
+print(f"Grade: {grade}")
